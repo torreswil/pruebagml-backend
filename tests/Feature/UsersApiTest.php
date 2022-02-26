@@ -71,14 +71,17 @@ class UsersApiTest extends TestCase
         $userToEdit = User::find(1);
 
         $userToEdit->email = 'emaileditadotest@mail.com';
+        $userToEdit->nombres = 'NombreEditado';
+
 
         $response = $this->putJson('api/users/1',$userToEdit->toArray());
 
-        $response->assertStatus(200);
+        $response->assertStatus(204);
 
         $this->assertDatabaseHas('users', [
             'email' => 'emaileditadotest@mail.com',
         ]);
+
     }
 
     public function testValidationUpdateUser()
@@ -89,12 +92,37 @@ class UsersApiTest extends TestCase
 
         $userToEdit->email = 'emaileditadotest@mail';
         $userToEdit->nombres = 'joe';
+        $userToEdit->apellidos = '6';
         $userToEdit->pais = 'Mexico';
+        $userToEdit->celular = '321123';
+        $userToEdit->cedula = 'd984';
 
         $response = $this->putJson('api/users/1',$userToEdit->toArray());
 
         $response->assertStatus(422);
 
-        $response->assertJsonValidationErrors(['nombres','email','apellidos','pais'], $responseKey = 'errors');
+        $response->assertJsonValidationErrors(
+            [
+                'nombres',
+                'email',
+                'apellidos',
+                'pais',
+                'celular',
+                'cedula'
+            ], $responseKey = 'errors');
+    }
+
+    public function testDeleteUser()
+    {
+        User::factory()->count(1)->create();
+
+        $response = $this->delete('api/users/1');
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('users', [
+            'id' => 1,
+            'deleted_at' => null
+        ]);
     }
 }

@@ -26,7 +26,12 @@ class UpdateUserRequest extends FormRequest
     {
 
         return [
-            'nombres' => 'required|alpha|max:100|min:5',
+            'nombres' => 'required|regex:/^[\pL\s\-]+$/u|max:100|min:5',
+            'cedula' => [
+                'required',
+                'numeric',
+                Rule::unique('users')->ignore($this->id)
+            ],
             'email' => [
                 'required',
                 'email:rfc,dns',
@@ -38,7 +43,7 @@ class UpdateUserRequest extends FormRequest
             ],
             'apellidos' => 'required|alpha|max:100',
             'direccion' => 'required|max:180',
-            'celular' => 'required|numeric|size:10'
+            'celular' => 'required|numeric|digits:10'
         ];
     }
 
