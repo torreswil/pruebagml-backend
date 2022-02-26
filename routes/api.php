@@ -18,5 +18,5 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::apiResource('users', UsersController::class);
-Route::get('categorias', CategoriasController::class);
+Route::get('categorias', [CategoriasController::class,'index']);
 
