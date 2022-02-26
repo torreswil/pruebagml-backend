@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserCreated;
 use App\Http\Requests\UserRequest;
+use App\Mail\UserWelcomeMail;
 use App\Models\User;
 use App\Querys\UsersQuery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -21,7 +24,12 @@ class UsersController extends Controller
 
     public function store(UserRequest $request)
     {
-        return User::create($request->all());
+
+        $user = User::create($request->all());
+
+        event(new UserCreated($user));
+        Mail::to($user)->send(new UserWelcomeMail($user));
+        return $user;
     }
 
     public function update(User $user, UserRequest $request)

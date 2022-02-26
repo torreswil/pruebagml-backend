@@ -2,12 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Mail\UserWelcomeMail;
 use App\Models\Categoria;
 use App\Models\User;
 use Database\Seeders\CategoriaSeeder;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class UsersApiTest extends TestCase
@@ -153,5 +155,18 @@ class UsersApiTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertJson($user->toArray());
+    }
+
+    public function testSendWelcomeMailWhenUserCreated()
+    {
+        Mail::fake();
+
+        Mail::assertNothingSent();
+
+        // Assert that a mailable was sent...
+        Mail::assertSent(UserWelcomeMail::class);
+
+        // Assert a mailable was sent twice...
+        Mail::assertSent(UserWelcomeMail::class, 2);
     }
 }

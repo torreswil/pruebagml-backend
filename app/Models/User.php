@@ -62,4 +62,6 @@ class User extends Authenticatable
         $query->where('nombres', 'like', "%".$search."%")->orWhere('apellidos','like', '%'.$search.'%');
         return $query;
     }
+
+
 }
