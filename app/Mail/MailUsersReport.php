@@ -2,26 +2,26 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
-class UserWelcomeMail extends Mailable
+class MailUsersReport extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    protected $report;
 
     /**
      * Create a new message instance.
      *
-     * @param User $user
+     * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Collection $report)
     {
-        $this->user = $user;
+        $this->report = $report;
     }
 
     /**
@@ -32,7 +32,7 @@ class UserWelcomeMail extends Mailable
     public function build()
     {
         return $this->from('test@prueba-tecnica.com')
-                    ->subject('Bienvenido, su cuenta fue creada con exito')
-                    ->markdown('emails.userWelcome',['user' => $this->user]);
+                    ->subject('Reporte Usuarios Registrados')
+                    ->markdown('emails.usersReport',['reporte' => $this->report]);
     }
 }

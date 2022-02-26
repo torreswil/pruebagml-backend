@@ -130,6 +130,7 @@ class UsersApiTest extends TestCase
 
     public function testPostUser()
     {
+        User::factory()->count(50)->create();
         $user = User::factory()->make()->toArray();
         $user['password'] = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
 

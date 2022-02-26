@@ -13,7 +13,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => 'Wilfredo Torres',
+
+    'email_admin' => env('EMAIL_ADMIN','wtorresariza@gmail.com'),
 
     /*
     |--------------------------------------------------------------------------

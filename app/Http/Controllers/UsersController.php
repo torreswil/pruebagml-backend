@@ -24,11 +24,10 @@ class UsersController extends Controller
 
     public function store(UserRequest $request)
     {
-
         $user = User::create($request->all());
 
         event(new UserCreated($user));
-        Mail::to($user)->send(new UserWelcomeMail($user));
+
         return $user;
     }
 

@@ -23,7 +23,8 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         UserCreated::class => [
-            SendUserWelcomeEmail::class
+            SendUserWelcomeEmail::class,
+            SendReportToAdmin::class
         ]
     ];
 
