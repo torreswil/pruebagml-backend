@@ -131,13 +131,27 @@ class UsersApiTest extends TestCase
         $user = User::factory()->make()->toArray();
         $user['password'] = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
 
-
         $response = $this->postJson('api/users',$user);
 
         $response->assertStatus(201);
 
+        unset($user['password']);
+
+        $response->assertJson($user);
+
         $this->assertDatabaseHas('users',[
             'email' => $user['email']
         ]);
+    }
+
+    public function testShow()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->getJson('api/users/1');
+
+        $response->assertStatus(200);
+
+        $response->assertJson($user->toArray());
     }
 }

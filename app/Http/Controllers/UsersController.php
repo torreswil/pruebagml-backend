@@ -14,6 +14,11 @@ class UsersController extends Controller
         return $usersQuery->paginate(request()->per_page);
     }
 
+    public function show(User $user)
+    {
+        return $user;
+    }
+
     public function store(UserRequest $request)
     {
         return User::create($request->all());
