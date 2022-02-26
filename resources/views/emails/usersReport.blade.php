@@ -2,7 +2,7 @@
     # Reporte de usuarios por país
 
 @component('mail::table')
-| Código    | Usuarios  |
+| País    | Usuarios  |
 |:------:   |:--------: |
 @foreach($reporte as $pais)
     | {{$pais->pais}}     |        {{$pais->usuarios}} |

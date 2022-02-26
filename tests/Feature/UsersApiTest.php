@@ -157,17 +157,4 @@ class UsersApiTest extends TestCase
 
         $response->assertJson($user->toArray());
     }
-
-    public function testSendWelcomeMailWhenUserCreated()
-    {
-        Mail::fake();
-
-        Mail::assertNothingSent();
-
-        // Assert that a mailable was sent...
-        Mail::assertSent(UserWelcomeMail::class);
-
-        // Assert a mailable was sent twice...
-        Mail::assertSent(UserWelcomeMail::class, 2);
-    }
 }
