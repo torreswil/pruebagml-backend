@@ -38,7 +38,7 @@ class UpdateUserRequest extends FormRequest
             ],
             'apellidos' => 'required|alpha|max:100',
             'direccion' => 'required|max:180',
-            ''
+            'celular' => 'required|numeric|size:10'
         ];
     }
 

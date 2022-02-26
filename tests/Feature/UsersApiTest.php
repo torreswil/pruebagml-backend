@@ -30,7 +30,6 @@ class UsersApiTest extends TestCase
         $response = $this->get('/api/users');
 
         $response->assertStatus(200);
-        dd(json_decode($response->getContent(),1));
         $response->assertJsonStructure([
             'data' => [
                 [
