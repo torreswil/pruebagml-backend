@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function scopeSearch($query, $search)
     {
-        if(is_integer($search)){
+        if(is_numeric($search)){
             return $query->where('cedula', $search);
         }
         $query->where('nombres', 'like', "%".$search."%")->orWhere('apellidos','like', '%'.$search.'%');
