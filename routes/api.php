@@ -16,5 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('users', [UsersController::class,'index']);
+Route::apiResource('users', UsersController::class);
 

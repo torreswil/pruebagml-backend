@@ -30,7 +30,7 @@ class UsersApiTest extends TestCase
         $response = $this->get('/api/users');
 
         $response->assertStatus(200);
-
+        dd(json_decode($response->getContent(),1));
         $response->assertJsonStructure([
             'data' => [
                 [
@@ -63,5 +63,39 @@ class UsersApiTest extends TestCase
         $this->assertGreaterThan(9,$data['total']);
         $this->assertLessThan(60,$data['total']);
 
+    }
+
+    public function testUpdateUser()
+    {
+        User::factory()->count(50)->create();
+
+        $userToEdit = User::find(1);
+
+        $userToEdit->email = 'emaileditadotest@mail.com';
+
+        $response = $this->putJson('api/users/1',$userToEdit->toArray());
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'emaileditadotest@mail.com',
+        ]);
+    }
+
+    public function testValidationUpdateUser()
+    {
+        User::factory()->count(50)->create();
+
+        $userToEdit = User::find(1);
+
+        $userToEdit->email = 'emaileditadotest@mail';
+        $userToEdit->nombres = 'joe';
+        $userToEdit->pais = 'Mexico';
+
+        $response = $this->putJson('api/users/1',$userToEdit->toArray());
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['nombres','email','apellidos','pais'], $responseKey = 'errors');
     }
 }

@@ -11,7 +11,8 @@ class UsersQuery extends \Spatie\QueryBuilder\QueryBuilder
 {
     public function __construct(Builder $builder, Request $request = null)
     {
-        parent::__construct(User::query());
+        $baseQuery = User::select('users.*','categorias.descripcion as descripcion_categora')->join('categorias','categorias.id','=','users.categoria_id');
+        parent::__construct($baseQuery);
 
         $this->allowedFilters([
             AllowedFilter::scope('search'),
