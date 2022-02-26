@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateUserRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,26 +25,37 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
 
-        return [
-            'nombres' => 'required|regex:/^[\pL\s\-]+$/u|max:100|min:5',
+        $rules = [
+            'nombres' => 'required|regex:/^[\pL\s\-\.]+$/u|max:100|min:5',
             'cedula' => [
                 'required',
-                'numeric',
-                Rule::unique('users')->ignore($this->id)
+                'numeric'
             ],
             'email' => [
                 'required',
-                'email:rfc,dns',
-                Rule::unique('users')->ignore($this->id)
+                'email:rfc,dns'
             ],
             'pais' => [
                 'required',
                 Rule::in($this->getPaises())
             ],
-            'apellidos' => 'required|alpha|max:100',
+            'apellidos' => 'required|regex:/^[\pL\s\-\.]+$/u|max:100',
             'direccion' => 'required|max:180',
             'celular' => 'required|numeric|digits:10'
         ];
+
+        if($this->id){
+            $rules['cedula'][] = Rule::unique('users')->ignore($this->id);
+            $rules['email'][] = Rule::unique('users')->ignore($this->id);
+
+            return $rules;
+        }
+
+        $rules['cedula'] = Rule::unique('users');
+        $rules['email'] = Rule::unique('users');
+        $rules['password'] = 'required';
+
+        return $rules;
     }
 
     private function getPaises()

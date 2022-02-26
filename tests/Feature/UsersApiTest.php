@@ -125,4 +125,19 @@ class UsersApiTest extends TestCase
             'deleted_at' => null
         ]);
     }
+
+    public function testPostUser()
+    {
+        $user = User::factory()->make()->toArray();
+        $user['password'] = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
+
+
+        $response = $this->postJson('api/users',$user);
+
+        $response->assertStatus(201);
+
+        $this->assertDatabaseHas('users',[
+            'email' => $user['email']
+        ]);
+    }
 }

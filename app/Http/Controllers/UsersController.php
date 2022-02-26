@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Querys\UsersQuery;
 use Illuminate\Http\Request;
@@ -14,7 +14,12 @@ class UsersController extends Controller
         return $usersQuery->paginate(request()->per_page);
     }
 
-    public function update(User $user, UpdateUserRequest $request)
+    public function store(UserRequest $request)
+    {
+        return User::create($request->all());
+    }
+
+    public function update(User $user, UserRequest $request)
     {
         $user->update($request->all());
         return response('Usuario actualizado exitosamente',204);
